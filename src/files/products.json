@@ -1,0 +1,22 @@
+[
+	{
+		"title": "Papa",
+		"description": "Papa negra",
+		"code": "PAP253",
+		"category": "verdura",
+		"stock": 99,
+		"price": 717,
+		"id": 1,
+		"status": true
+	},
+	{
+		"title": "Pera",
+		"description": "Pera Hondureña",
+		"code": "PER253",
+		"category": "fruta",
+		"stock": 99,
+		"price": 717,
+		"id": 3,
+		"status": true
+	}
+]
