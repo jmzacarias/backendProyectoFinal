@@ -1,6 +1,7 @@
 import { Router } from "express";
 import __dirname from "../utils.js";
 import ProductManager from "../managers/productsManager.js";
+import { uploader } from "../utils.js";
 
 const router = Router()
 
@@ -16,21 +17,36 @@ router.get('/', async(req,res)=>{
 
 router.get('/:pid',async(req,res)=>{
     let id= parseInt(req.params.pid);
+    if(!req.file) res.status(500).json({status:"error",error:"Couldn't upload file"})
     if(isNaN(id)) return res.status(404).json({status: 'error', error:'[ERROR] Params must be a number'});
     let data = await productManager.getProductById(id);
     return res.status(200).json({status: 'success', payload: data})
 })
 
-router.post('/',async(req,res)=>{
-    let newProduct = req.body;
+router.post('/',uploader.single('thumbnail'),async(req,res)=>{
+    console.log(req.body)
+    const {title,description,code,category,stock,price} = req.body;
+    
+    let newProduct = {
+        title,
+        description,
+        code,
+        category,
+        stock,
+        price,
+        thumbnail: req.file.filename
+    };
+    console.log(newProduct)
+
     if(typeof newProduct.title !== 'string' || 
         typeof newProduct.description !== 'string' ||
         typeof newProduct.code !== 'string' || 
         typeof newProduct.category !== 'string' || 
         isNaN(newProduct.stock)|| 
         isNaN(newProduct.price)) 
-            return res.status(404).json({status: 'error', error:'Missing fields'});    
-    return res.status(200).json({status: 'Success', payload: await productManager.addProduct(newProduct)})
+            return res.status(400).json({status: 'error', error:'Missing fields'});  
+    await productManager.addProduct(newProduct)  
+    return res.status(200).json({status: 'Success', payload: newProduct })
 })
 
 router.put('/:pid',async(req,res)=>{

@@ -1,0 +1,38 @@
+<div>
+    <form id="productForm">
+        <label for="title">Nombre</label>
+        <input id="title" name="title">
+        <label for="descripton">Descripción</label>
+        <input id="description" name="description">
+        <label for="code">Código</label>
+        <input id="code" name="code">
+        <label for="category">Categoría</label>
+        <input id="category" name="category">
+        <label for="stock">Stock</label>
+        <input id="stock" name="stock">
+        <label for="price">Precio</label>
+        <input id="price" name="price">
+        <label for="thumbnail">Imagen</label>
+        <input type="file" id="thumbnail" name="thumbnail">
+        <input type="submit">                
+    </form>
+</div>
+</br>
+
+<div id="productsList"> 
+    <div>
+    {{#each products}}
+        <div class="productCard" id="productCardId{{this.id}}"> 
+            <p>Producto: {{this.title}}</p>
+            <p>Descripción: {{this.description}}</p>
+            <p>Precio: ${{this.price}}</p>
+            <button onclick="deleteProduct({{this.id}})">Elminar</button> 
+            <hr>
+        </div>
+    {{/each}}
+</div>
+</div>
+
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="js/realTimeProducts.js"></script>

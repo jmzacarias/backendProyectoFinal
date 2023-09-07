@@ -2,21 +2,25 @@
 	{
 		"title": "Papa",
 		"description": "Papa negra",
-		"code": "PAP253",
-		"category": "verdura",
-		"stock": 99,
-		"price": 717,
-		"id": 1,
-		"status": true
+		"code": "PAP123",
+		"category": "Verdura",
+		"stock": "241",
+		"price": "235",
+		"thumbnail": "1693953775128-descarga.jpg",
+		"id": 13,
+		"status": true,
+		"thumbnails": []
 	},
 	{
-		"title": "Pera",
-		"description": "Pera Hondureña",
-		"code": "PER253",
-		"category": "fruta",
-		"stock": 99,
-		"price": 717,
-		"id": 3,
-		"status": true
+		"title": "Lechuga",
+		"description": "Lechuga",
+		"code": "LEC123",
+		"category": "verdura",
+		"stock": "123",
+		"price": "123",
+		"thumbnail": "1693959336770-descarga.jpg",
+		"id": 14,
+		"status": true,
+		"thumbnails": []
 	}
 ]
