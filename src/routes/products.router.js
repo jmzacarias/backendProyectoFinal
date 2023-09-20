@@ -1,7 +1,9 @@
 import { Router } from "express";
 import __dirname from "../utils.js";
-import ProductManager from "../managers/productsManager.js";
 import { uploader } from "../utils.js";
+// import ProductManager from "../managers/productsManager.js";
+import ProductManager from "../dao/mongooseManagers/productsManager.js";
+
 
 const router = Router()
 
@@ -34,7 +36,7 @@ router.post('/',uploader.single('thumbnail'),async(req,res)=>{
         category,
         stock,
         price,
-        thumbnail: req.file.filename
+        // thumbnail: req.file.filename
     };
     console.log(newProduct)
 
@@ -45,7 +47,9 @@ router.post('/',uploader.single('thumbnail'),async(req,res)=>{
         isNaN(newProduct.stock)|| 
         isNaN(newProduct.price)) 
             return res.status(400).json({status: 'error', error:'Missing fields'});  
-    await productManager.addProduct(newProduct)  
+    let result = await productManager.addProduct(newProduct)  
+    console.log(result.slice(7))
+    if(result.typeOf==="string") return res.status(400).json({status: 'Error', error: result.slice(7)})
     return res.status(200).json({status: 'Success', payload: newProduct })
 })
 

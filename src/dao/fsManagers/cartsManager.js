@@ -1,4 +1,4 @@
-import fs from 'fs';
+ import fs from 'fs';
 import __dirname from '../utils.js';
 import ProductManager from './productsManager.js';
 

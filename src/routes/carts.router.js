@@ -1,11 +1,12 @@
 import { Router } from "express";
 import __dirname from "../utils.js";
-import CartManager from "../managers/cartsManager.js";
+import CartManager from "../dao/mongooseManagers/cartsManager.js";
 
 const router = Router()
 
 const cartManager = new CartManager();
 router.get('/', async (req,res)=>{
+    console.log(await cartManager.createCart())
     return res.status(200).json({status: 'Success', payload: await cartManager.createCart()})
 })
 

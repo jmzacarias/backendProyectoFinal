@@ -22,11 +22,11 @@
 <div id="productsList"> 
     <div>
     {{#each products}}
-        <div class="productCard" id="productCardId{{this.id}}"> 
+        <div class="productCard" id="productCardId{{this._id}}"> 
             <p>Producto: {{this.title}}</p>
             <p>Descripción: {{this.description}}</p>
             <p>Precio: ${{this.price}}</p>
-            <button onclick="deleteProduct({{this.id}})">Elminar</button> 
+            <button onclick="deleteProduct({{this._id}})">Elminar</button> 
             <hr>
         </div>
     {{/each}}

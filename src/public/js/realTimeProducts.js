@@ -1,3 +1,5 @@
+
+
 const productForm = document.getElementById('productForm')
 
 const socket = io();
@@ -41,12 +43,12 @@ socket.on('newProductsList', data =>{
     productsListContainer.innerHTML="";
     for (const product of data) {
         const div = document.createElement('div');
-        div.setAttribute("id",`productCardId${product.id}`)
+        div.setAttribute("id",`productCardId${product._id}`)
         div.innerHTML=
             `<p>Producto: ${product.title}</p>
             <p>Precio: $${product.price}</p>
             <p>Descripción: ${product.description}</p>
-            <button id=${product.id} onclick="deleteProduct(${product.id})" >Eliminar</button>
+            <button id=${product.id} onclick="deleteProduct(${product._id})" >Eliminar</button>
             <hr>`
         productsListContainer.appendChild(div)
     }
