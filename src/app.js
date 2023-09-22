@@ -29,7 +29,7 @@ app.use('/',viewsRouter)
 try {
     mongoose.connect('mongodb+srv://juanzacarias:coderhouse@cluster0.omgo4ez.mongodb.net/',{
         dbName: 'e-commerce'
-    })
+    }) 
     console.log('Connected to E-Commerce DB')
 } catch (error) {
     console.log({status:'error', error: error.message})
@@ -41,6 +41,7 @@ io.on('connection', socket=>{
         io.emit('newProductsList', data)
     })
     socket.on('newMessage', data =>{
+        console.log(data)
         io.emit('log', data)
     })
 })

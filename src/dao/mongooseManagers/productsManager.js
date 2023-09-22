@@ -20,10 +20,8 @@ class ProductManager {
 
     addProduct = async(product)=>{
         let validateCode = await productsDAO.findOne({code:product.code})
-        console.log({productRecibidoPorBoyEnManager: validateCode})
         if(validateCode) return '[ERROR] Code already exists';
-        await productsDAO.create(product)
-        return await this.getProductById(product.id)
+        return await productsDAO.create(product)
     }
 
     updateProduct = async(id,dataToUpdate)=>{

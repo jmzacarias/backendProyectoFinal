@@ -11,41 +11,46 @@ Swal.fire({
     document.getElementById('userEmail').innerHTML = userEmail
     let socket = io()
 
-    let chatbox = document.getElementById('chatbox')
-    
-    chatbox.addEventListener('keyup', async(event)=>{
-        if(event.key === 'Enter'){
-            if(chatbox.value.trim().length > 0){
-                let newMessage = {
-                    userEmail,
-                    message:chatbox.value
-                }
-                fetch('/api/chat',{
-                    method:'POST',
-                    body: newMessage
-                })
-                .then(result=>result.json())
-                .then(()=>fetch('/api/products',{
-                    method:'GET'
-                }))
-                .then(result=>result.json())
-                .then(result=>{
-                    socket.emit('newMessage', result.payload)
-                })
+    let submitChatbox = document.getElementById('submitChatbox')
+    let chatbox = document.getElementById("chatbox")
+
+    submitChatbox.onclick = async()=>{
+        if(chatbox.value.trim().length > 0){
+            let newMessage = {
+                userEmail: userEmail,
+                message:chatbox.value
             }
-            chatbox.value=""
+            console.log(newMessage)
+            fetch('/api/chat',{
+                method:'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(newMessage)
+            })
+            .then(result=>result.json())
+            .then(()=>fetch('/api/chat',{
+                method:'GET'
+            }))
+            .then(result=>result.json())
+            .then(json=>{
+                socket.emit('newMessage', json.payload)
+            })
+        }
+        chatbox.value=""
+    }
+    
+ 
+
+    socket.on('log',data=>{
+        let logContainer = document.getElementById('logContainer')
+        logContainer.innerHTML="";
+        for (const message of data){
+            const messageLine = document.createElement('div');
+            messageLine.innerHTML = `<p>${message.userEmail} dijo a las ${message.timestamp}: ${message.message} </p>`
+            logContainer.appendChild(messageLine)
         }
     })
-
-    socket.on('log', data=>{
-        let logContainer = document.getElementById('log')
-        logContainer.innerHTML = "";
-        for (const message of data) {
-            const messageLine= document.createElement('div');
-            messageLine.innerHTML =
-                `<p>${message.userEmail} dijo a las ${message.timestamp}: ${message.message}</p>`
-            logContainer.appendChild(messageLine)
-         }
-    })
 })
+
 

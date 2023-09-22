@@ -6,12 +6,13 @@ class MessageManager {
 
     }
     getMessages = async()=>{
-        const messages = await messageDAO.find()
+        const messages = await messageDAO.find().lean()
         return messages
     }
 
     createMessage = async(message)=>{
-        const newMessage = await messageDAO.create(message)
+        return await messageDAO.create(message)
+        
     }
 }
 

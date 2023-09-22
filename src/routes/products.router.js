@@ -19,14 +19,13 @@ router.get('/', async(req,res)=>{
 
 router.get('/:pid',async(req,res)=>{
     let id= parseInt(req.params.pid);
-    if(!req.file) res.status(500).json({status:"error",error:"Couldn't upload file"})
+    // if(!req.file) res.status(500).json({status:"error",error:"Couldn't upload file"})
     if(isNaN(id)) return res.status(404).json({status: 'error', error:'[ERROR] Params must be a number'});
     let data = await productManager.getProductById(id);
     return res.status(200).json({status: 'success', payload: data})
 })
 
 router.post('/',uploader.single('thumbnail'),async(req,res)=>{
-    console.log(req.body)
     const {title,description,code,category,stock,price} = req.body;
     
     let newProduct = {
@@ -38,7 +37,6 @@ router.post('/',uploader.single('thumbnail'),async(req,res)=>{
         price,
         // thumbnail: req.file.filename
     };
-    console.log(newProduct)
 
     if(typeof newProduct.title !== 'string' || 
         typeof newProduct.description !== 'string' ||
@@ -48,7 +46,8 @@ router.post('/',uploader.single('thumbnail'),async(req,res)=>{
         isNaN(newProduct.price)) 
             return res.status(400).json({status: 'error', error:'Missing fields'});  
     let result = await productManager.addProduct(newProduct)  
-    console.log(result.slice(7))
+    // console.log(result.slice(7))
+    console.log(result)
     if(result.typeOf==="string") return res.status(400).json({status: 'Error', error: result.slice(7)})
     return res.status(200).json({status: 'Success', payload: newProduct })
 })

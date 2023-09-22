@@ -11,13 +11,7 @@ router.get('/', async(req,res)=>{
     return res.status(200).json({status: 'succes', payload:log})
 })
 router.post('/', async(req,res)=>{
-    const {userEmail,message} = req.body;
-    
-    let newMessage = {
-        userEmail,
-        message
-    }
-    await messageManager.createMessage(newMessage)
-    return res.status(200).json({status: 'success', payload: newMessage})
+    await messageManager.createMessage(req.body)
+    return res.status(200).json({status: 'success', payload: req.body})
 })
 export default router

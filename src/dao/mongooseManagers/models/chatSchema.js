@@ -1,18 +1,15 @@
 import mongoose from 'mongoose';
 
 const messageSchema = new mongoose.Schema({
+    userEmail: {
+        type: String,
+    },
     message: {
-        userEmail: {
-            type: String,
-            required: true
-        },
-        message: {
-            type: String,
-            required:true},
-        timestamp:{
-            type: Date,
-            default: Date.now
-        }
+        type: String,
+    },
+    timestamp:{
+        type: Date,
+        default: Date.now
     }
 })
 
