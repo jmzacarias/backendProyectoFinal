@@ -38,6 +38,7 @@ try {
 io.on('connection', socket=>{
     console.log('Socket connected');
     socket.on('updatedProducts', data=>{
+        console.log({Linea41APP:data})
         io.emit('newProductsList', data)
     })
     socket.on('newMessage', data =>{

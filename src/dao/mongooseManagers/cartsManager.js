@@ -34,17 +34,30 @@ class CartManager {
         return createdCart
     }
 
-    addProduct = async(pid,cid)=>{
+    addProduct = async(cid,pid)=>{
         let productToAdd = await productManager.getProductById(pid);
         if(!productToAdd) return `[ERROR] There is no product with Id ${pid}`;
         let cartToUpdate = await cartsDAO.findById(cid);
         if(!cartToUpdate) return `[ERROR] There is no cart with Id ${cid}`
-        let isProductInCart = cartToUpdate.products.find(item => item._id.toString() === pid);
+        let isProductInCart = cartToUpdate.products.find(item => item.product.toString() === pid);
         if(isProductInCart) {
-            isProductInCart.qty += 1
+            isProductInCart.quantity += 1
         }else{
-            cartToUpdate.products.push({_id:pid,qty:1})
+            cartToUpdate.products.push({product:pid,quantity:1})
         }
+        let result = await cartsDAO.findByIdAndUpdate(cid, cartToUpdate)
+        return await cartsDAO.findById(result)
+    }
+
+    deleteProduct = async(pid,cid)=>{
+        let cartToUpdate = await cartsDAO.findById(cid);
+        if(!cartToUpdate) return `[ERROR] There is no cart with Id ${cid}`
+        const productToDelete = cartToUpdate.products.find(item=> item.product.toString()===pid)
+        if(!productToDelete) return `[ERROR] Product ${pid} couldn't be find in this cart`
+        await cartsDAO.updateOne(
+            {_id:cid},
+            {$pull:{products:{product:pid}}}
+        )
         return await cartsDAO.findById(cid)
     }
 }

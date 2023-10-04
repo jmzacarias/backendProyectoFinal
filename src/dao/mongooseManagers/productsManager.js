@@ -26,7 +26,7 @@ class ProductManager {
 
     updateProduct = async(id,dataToUpdate)=>{
         let updatedProduct = await productsDAO.findOneAndUpdate({_id},dataToUpdate,{new:true}).lean().exec()
-        if(!updatedProduct) return `[ERROR] There is no product with Id ${id}`.lean().exec()
+        if(!updatedProduct) return `[ERROR] There is no product with Id ${id}`
         return updatedProduct
     }
 

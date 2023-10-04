@@ -1,0 +1,38 @@
+
+     <div>
+        {{#if paginateInfo.hasPrevPage}}
+            <a href="{{paginateInfo.prevLink}}">Anterior</a>
+        {{/if}}
+        {{#each paginateInfo.totalPages}}
+            <a href="{{this.link}}">{{this.page}}</a>
+        {{/each}}
+        {{#if paginateInfo.hasNextPage}}
+            <a href="{{paginateInfo.nextLink}}">Siguiente</a>
+        {{/if}}
+     </div>    
+     
+     <p>PRODUCTOS</p> 
+    <table>
+        <thead>
+            <tr>
+                <td>Producto</td>
+                <td>Descripción</td>
+                <td>Código</td>
+                <td>Categoría</td>
+                <td>Precio</td>
+            </tr>
+        </thead>
+        {{#each products}}
+            <tr>
+                <td>{{this.title}}</td>
+                <td>{{this.description}}</td>
+                <td>{{this.code}}</td>
+                <td>{{this.category}}</td> 
+                <td>{{this.price}}</td>
+                <td><button onclick="addProductToCart('{{this._id}}')">Agregar al carrito</button> </td>
+            </tr> 
+        {{/each}}
+    </table>
+
+
+<script src="js/products.js"></script>

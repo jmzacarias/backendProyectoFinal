@@ -26,7 +26,7 @@
             <p>Producto: {{this.title}}</p>
             <p>Descripción: {{this.description}}</p>
             <p>Precio: ${{this.price}}</p>
-            <button onclick="deleteProduct({{this._id}})">Elminar</button> 
+            <button onclick="deleteProduct('{{this._id}}')">Elminar</button> 
             <hr>
         </div>
     {{/each}}
