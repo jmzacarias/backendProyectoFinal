@@ -1,7 +1,6 @@
 import { Router } from "express";
 import __dirname from "../utils.js";
 import { uploader } from "../utils.js";
-// import ProductManager from "../managers/productsManager.js";
 import ProductManager from "../dao/mongooseManagers/productsManager.js";
 import productsDAO from "../dao/mongooseManagers/models/productsSchema.js";
 

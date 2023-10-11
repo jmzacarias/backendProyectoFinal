@@ -10,7 +10,6 @@ addProductToCart = (id)=>{
         console.log(result)
         fetch(`/api/carts/${result.payload._id}/products/${id}`,{
             method: 'post',
-            // body: {product: id, quantity: 1},
             headers: {
                 'Content-Type': 'application/json'
             },

@@ -6,7 +6,7 @@ const socket = io();
 
 productForm.addEventListener('submit',event=>{
     event.preventDefault();
-    const formData = new FormData(productForm);
+    const formData = new FormData(productForm)
     fetch('/api/products',{
         method:'POST',
         body:formData
