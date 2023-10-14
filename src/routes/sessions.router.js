@@ -18,8 +18,8 @@ router.post('/register', async(req,res)=>{
         let result = await userManager.addUser(newUser)    
         if(typeof result === 'String') return res.status(400).send({status: 'error', error: result})
         return res.status(200).send({status: 'success', payload: result})
-    } catch (error) {
-        console.log(error.message)
+    } catch (err) {
+        console.log(err.message)
     }
 })
 
