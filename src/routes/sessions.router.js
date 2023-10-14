@@ -6,9 +6,6 @@ import UserManager from "../dao/mongooseManagers/usersManager.js";
 const userManager = new UserManager()
 const router = Router();
 
-
-
-
 router.get('/logout', async(req,res)=>{
     req.session.destroy(error=>{
         if(error) res.send('Logout error')
