@@ -1,4 +1,5 @@
 import { Router } from "express";
+import productsDAO from "../../dao/mongooseManagers/models/productsSchema.js";
 
 const router = Router()
 
@@ -53,9 +54,9 @@ router.get('/', async(req,res)=>{
             const modifiedUrl = req.originalUrl.replace(`page=${data.page}`, `page=${data.nextPage}`)
             nextLink= `http://${req.hostname}:8080${modifiedUrl}`
         }
-        console.log({prevLink:prevLink, nextLink:nextLink})
+        let user = req.session.user
 
-        return res.render('products', { products: data.docs, paginateInfo: {
+        return res.render('products', { user, products: data.docs, paginateInfo: {
             hasPrevPage: data.hasPrevPage,
             hasNextPage: data.hasNextPage,
             prevLink: prevLink,

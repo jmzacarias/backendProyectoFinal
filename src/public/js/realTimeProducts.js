@@ -1,6 +1,6 @@
 
 
-const productForm = document.getElementById('productForm')
+const productForm = document.getElementById('productForm') 
 
 const socket = io();
 

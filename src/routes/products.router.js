@@ -57,7 +57,7 @@ router.get('/:pid',async(req,res)=>{
 router.post('/',uploader.single('thumbnail'),async(req,res)=>{
     const {title,description,code,category,stock,price} = req.body;
     
-    let newProduct = {
+    let newProduct = { 
         title,
         description,
         code,

@@ -1,9 +1,8 @@
 <h2>LOGIN</h2>
 
-<form id="loginForm">
+<form id="loginForm" action="api/sessions/login" method="post">
     <input id="email" name="email" placeholder="Correo Electrónico">
-    <input id="password" name="password" placeholder="Contraseña">
+    <input type="password" id="password" name="password" placeholder="Contraseña">
     <input type="submit"> | <a href="http://localhost:8080/register">Registrate</a>              
 </form>
 
-<script src="js/login.js"></script>

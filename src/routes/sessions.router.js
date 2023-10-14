@@ -7,42 +7,50 @@ const userManager = new UserManager()
 const router = Router();
 
 
-
-
 router.get('/logout', async(req,res)=>{
-    req.session.destroy(error=>{
-        if(error) res.send('Logout error')
-    }) 
-    res.redirect('/')
+    req.session.destroy((err) => {
+        if (err) {
+          console.log(err);
+          res.status(500).render("errors/base", { error: err });
+        } else res.redirect("/session/login");
+      });
 })
 router.post('/register', async(req,res)=>{
     try {
         let newUser = req.body;
+        console.log(newUser)
         let result = await userManager.addUser(newUser)    
         if(typeof result === 'String') return res.status(400).send({status: 'error', error: result})
-        return res.status(200).send({status: 'success', payload: result})
+        return res.redirect('/')
     } catch (error) {
         console.log(error.message)
     }
 })
 
 router.post('/login', async(req,res)=>{
-    const { email , password }= req.body
-    console.log(email, password)
-    let user = await usersDAO.findOne({ email, password }).lean().exec()
-    console.log(user)
-    if(user===null) {
-        console.log(user)
-        return res.redirect('./')
+    try {
+        const { email , password }= req.body
+        let user = await usersDAO.findOne({ email, password }).lean().exec();
+        if(user===null) {
+            return res.redirect('/')
+        }
+        if(user.email === `adminCoder@coder.com` && user.password === 'adminCod3r123'){
+            user.role = 'admin'
+        }else{
+            user.role = 'user'
+        }
+        await new Promise((resolve, reject) => {
+            req.session.user = user;
+            resolve();
+        });
+
+        return res.redirect('/products')
+    } catch (error) {
+        res.status(400).send({status: 'error', error: error.message})
     }
-    if(user.email === `adminCoder@coder.com` && user.password === 'adminCod3r123'){
-        user.role = 'admin'
-    }else{
-        user.role = 'user'
-    }
-    req.session.user = user
-    res.redirect('/products')
+ 
 })
+
 
 
 export default router
