@@ -1,10 +1,15 @@
 import { Router } from "express";
-import { privateRoutes , publicRoutes } from "../../middlewares/auth.middleware.js";
+import { isAuth } from '../../middlewares/auth.middleware.js'
 
 const router = Router()
 
-router.get("/", privateRoutes, (req, res) => {
-     res.render("sessions/login");   	
+router.get("/",  (req, res) => {
+  let user = req.session.user
+  if(!user) {
+    res.render('sessions/login')  
+  }else{
+   res.render('sessions/profile', {user})   
+  }
 })
 
 router.get('/register', (req,res)=>{
@@ -19,7 +24,6 @@ router.get('/profile',(req,res)=>{
     }else{
      res.render('sessions/profile', {user})   
     }
-    
 })
 
 

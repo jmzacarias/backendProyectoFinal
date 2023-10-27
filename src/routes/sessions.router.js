@@ -2,7 +2,9 @@ import { Router } from "express";
 import __dirname from "../utils.js";
 import usersDAO from "../dao/mongooseManagers/models/usersSchema.js";
 import UserManager from "../dao/mongooseManagers/usersManager.js";
-
+import { isValidPassword } from "../utils.js";
+import passport from 'passport'
+ 
 const userManager = new UserManager()
 const router = Router();
 
@@ -12,35 +14,34 @@ router.get('/logout', async(req,res)=>{
         if (err) {
           console.log(err);
           res.status(500).render("errors/base", { error: err });
-        } else res.redirect("/session/login");
+        } else res.redirect("/");
       });
 })
-router.post('/register', async(req,res)=>{
+router.post('/register', passport.authenticate('register', {failureRedirect: '/session/failRegister'}), async(req,res)=>{
     try {
-        let newUser = req.body;
-        console.log(newUser)
-        let result = await userManager.addUser(newUser)    
-        if(typeof result === 'String') return res.status(400).send({status: 'error', error: result})
         return res.redirect('/')
     } catch (error) {
         console.log(error.message)
     }
 })
 
-router.post('/login', async(req,res)=>{
+router.get('/failRegister', (req,res) => res.send({error: 'Register failed'}))
+
+router.post('/login', passport.authenticate('login', {failureRedirect: '/failLogin'}), async(req,res)=>{
     try {
-        const { email , password }= req.body
-        let user = await usersDAO.findOne({ email, password }).lean().exec();
-        if(user===null) {
-            return res.redirect('/')
-        }
-        if(user.email === `adminCoder@coder.com` && user.password === 'adminCod3r123'){
-            user.role = 'admin'
-        }else{
-            user.role = 'user'
-        }
+        if(!req.user) return res.status(400).send({status: 'error', error: 'Invalid credentials'})
         await new Promise((resolve, reject) => {
-            req.session.user = user;
+            req.session.user = {
+                first_name: req.user.first_name,
+                last_name: req.user.last_name,
+                email: req.user.email,
+                age: req.user.age
+            }
+            if(req.user.email === 'adminCoder@coder.com') {
+                req.session.user.role= 'admin'
+            } else {
+                req.session.user.role= 'user'
+            }
             resolve();
         });
 
@@ -51,6 +52,35 @@ router.post('/login', async(req,res)=>{
  
 })
 
+router.get('/failLogin', (req,res) => res.send({error:' Login Failed'}))
 
+router.get('/github', passport.authenticate('github', { scope: ['user:email']}), (req, res)=>{
+
+})
+
+router.get('/githubcallback',passport.authenticate('github', {failureRedirect: '/login'}), async(req,res)=>{
+    try {
+        await new Promise((resolve, reject) => {
+            req.session.user = {
+                first_name: req.user.first_name,
+                last_name: req.user.last_name,
+                email: req.user.email,
+                age: req.user.age
+            }
+            if(req.user.email === 'adminCoder@coder.com') {
+                req.session.user.role= 'admin'
+            } else {
+                req.session.user.role= 'user'
+            }
+            resolve();
+        });
+
+        return res.redirect('/products')
+    } catch (error) {
+        res.status(400).send({status: 'error', error: error.message})
+    }
+    req.session.user = req.user
+    res.redirect('/products')
+})
 
 export default router

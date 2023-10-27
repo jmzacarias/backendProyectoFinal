@@ -1,19 +1,17 @@
 import { Router } from "express";
 import productsDAO from "../../dao/mongooseManagers/models/productsSchema.js";
+import { auth } from '../../middlewares/auth.middleware.js'
+import ProductManager from "../../dao/mongooseManagers/productsManager.js";
 
 const router = Router()
+const productManager =  new ProductManager()
 
-// router.get('/',async(req,res)=>{
-//     let products= await productManager.getProducts();
-//     res.render('home',{products})
-// })
-
-router.get('/realtimeproducts',async(req,res)=>{
+router.get('/realtimeproducts', auth, async(req,res)=>{
     let products = await productManager.getProducts();
     res.render('realTimeProducts',{products})
 })
 
-router.get('/', async(req,res)=>{
+router.get('/', auth, async(req,res)=>{
     try {
         const limit = req.query.limit || 10;
         const page = req.query.page || 1;

@@ -2,14 +2,13 @@ import { Router } from "express";
 import __dirname from "../../utils.js";
 import ProductManager from "../../dao/mongooseManagers/productsManager.js";
 import cartsDAO from "../../dao/mongooseManagers/models/cartsSchema.js";
-import productsDAO from "../../dao/mongooseManagers/models/productsSchema.js";
-
+import { auth } from "../../middlewares/auth.middleware.js";
 
 const router = Router();
 const productManager = new ProductManager();
 
 
-router.get('/:cid', async(req,res)=>{
+router.get('/:cid', auth, async(req,res)=>{
     try {
         let cid = req.params.cid;
         const validObjectIdRegex = /^[0-9a-fA-F]{24}$/;
