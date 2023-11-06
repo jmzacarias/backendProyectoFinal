@@ -82,7 +82,6 @@ router.post('/',uploader.single('thumbnail'),async(req,res)=>{
 
 router.put('/:pid',async(req,res)=>{
     let id = req.params.pid;
-    // if(isNaN(id)) return res.status(404).json({status: 'error', error:'Params must be a number'});
     let dataToUpdate = req.body;
     let updatedProduct = await productManager.updateProduct(id,dataToUpdate);
     return res.status(200).json({status: 'Success', payload: {updatedProduct: updatedProduct}})
@@ -90,7 +89,6 @@ router.put('/:pid',async(req,res)=>{
 
 router.delete('/:pid', async(req,res)=>{
     let id = req.params.pid;
-    // if(isNaN(id)) return res.status(404).json({status: 'error', error:'Params must be a number'});
     return res.status(200).json({status:'Success', payload: await productManager.deleteById(id)})
 })
-export default router
+export default router 

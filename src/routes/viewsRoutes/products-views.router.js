@@ -1,11 +1,7 @@
 import { Router } from "express";
+import productsDAO from "../../dao/mongooseManagers/models/productsSchema.js";
 
 const router = Router()
-
-// router.get('/',async(req,res)=>{
-//     let products= await productManager.getProducts();
-//     res.render('home',{products})
-// })
 
 router.get('/realtimeproducts',async(req,res)=>{
     let products = await productManager.getProducts();

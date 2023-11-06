@@ -1,5 +1,5 @@
 import { Router } from "express";
-import __dirname from "../utils.js";
+import __dirname from "../utils.js"; 
 import usersDAO from "../dao/mongooseManagers/models/usersSchema.js";
 import UserManager from "../dao/mongooseManagers/usersManager.js";
 
@@ -26,19 +26,20 @@ router.post('/register', async(req,res)=>{
 router.post('/login', async(req,res)=>{
     const { email , password }= req.body
     console.log(email, password)
+    if(email === `adminCoder@coder.com` && password === `adminCod3r123`) {
+        req.session.user = {
+            email,
+            role: admin
+        }
+        return res.redirect('/products')
+    }
     let user = await usersDAO.findOne({ email, password }).lean().exec()
-    console.log(user)
     if(user===null) {
-        console.log(user)
         return res.redirect('./')
     }
-    if(user.email === `adminCoder@coder.com` && user.password === 'adminCod3r123'){
-        user.role = 'admin'
-    }else{
-        user.role = 'user'
-    }
+    user.role = 'user'
     req.session.user = user
-    res.redirect('/products')
+    return res.redirect('/products')
 })
 
 
