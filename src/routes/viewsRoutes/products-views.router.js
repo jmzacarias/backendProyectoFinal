@@ -23,7 +23,6 @@ router.get('/', async(req,res)=>{
         if(stock) filterOptions.stock= {$gt:stock}
     
         const data = await productsDAO.paginate(filterOptions,paginateOptions)
-        console.log({dataLine66:data})
         let prevLink
         let nextLink
         const totalPages = []
@@ -49,7 +48,7 @@ router.get('/', async(req,res)=>{
             const modifiedUrl = req.originalUrl.replace(`page=${data.page}`, `page=${data.nextPage}`)
             nextLink= `http://${req.hostname}:8080${modifiedUrl}`
         }
-        console.log({prevLink:prevLink, nextLink:nextLink})
+        let user= req.session.user
 
         return res.render('products', { products: data.docs, paginateInfo: {
             hasPrevPage: data.hasPrevPage,
@@ -57,7 +56,8 @@ router.get('/', async(req,res)=>{
             prevLink: prevLink,
             nextLink: nextLink,
             totalPages: totalPages
-        } })    
+        },
+        user })    
     } catch (error) {
         console.log(error)
         return res.status(500).json({status:'error', error: error.message})

@@ -7,7 +7,6 @@ loginForm.addEventListener('submit', event=>{
     for (const [key, value] of formData.entries()) {
         user[key] = value;
       }
-      console.log({user:user})
     fetch('/api/sessions/login',{
     method:'POST',
     headers: {
@@ -15,6 +14,16 @@ loginForm.addEventListener('submit', event=>{
     },
     body:JSON.stringify(user)
     })
-    .then
-    loginForm.reset()
+    .then ((response)=>{
+        if(response.status===200) {
+            alert('Identificacion exitosa')
+            window.location.href = '/products';
+        }else{
+            alert(`Credenciales incorrectas`)
+            loginForm.reset()
+        }
+    })
+    .catch((error) => {
+        console.error('Error en la solicitud:', error);
+      });
 })

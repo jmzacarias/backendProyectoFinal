@@ -1,5 +1,3 @@
-
-
 const registerForm = document.getElementById('registerForm')
 
 registerForm.addEventListener('submit', event=>{
@@ -17,5 +15,16 @@ registerForm.addEventListener('submit', event=>{
     },
     body:JSON.stringify(newUser)
     })
-    registerForm.reset()
+    .then ((response)=>{
+        if(response.status===200) {
+            alert('Registro exitoso')
+            window.location.href = '/';
+        }else{
+            alert(`Error: El email ${newUser.email} ya se encuentra registrado`)
+            registerForm.reset()
+        }
+    })
+    .catch((error) => {
+        console.error('Error en la solicitud:', error);
+      });
 })
