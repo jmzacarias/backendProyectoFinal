@@ -12,7 +12,7 @@ router.get('/register', (req,res)=>{
 })
 
 
-router.get('/profile',(req,res)=>{
+router.get('/profile', publicRoutes, (req,res)=>{
     let user = req.session.user
     res.render('sessions/profile', {user})
 })

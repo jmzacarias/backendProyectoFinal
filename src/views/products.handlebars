@@ -1,5 +1,6 @@
     <button onclick="logout()">Cerrar sesión</button>
-
+    Bienvenido {{user.first_name}} {{user.last_name}}
+    Rol: {{user.role}}
      <div>
         {{#if paginateInfo.hasPrevPage}}
             <a href="{{paginateInfo.prevLink}}">Anterior</a>
