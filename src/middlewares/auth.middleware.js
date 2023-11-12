@@ -14,3 +14,4 @@ export const isAuth = (req, res, next)=>{
      res.render('sessions/profile', {user})   
     }
 }
+

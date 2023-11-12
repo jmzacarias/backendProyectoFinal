@@ -23,3 +23,4 @@ export const createHash = password => bcrypt.hashSync(password , bcrypt.genSaltS
 
 export const isValidPassword = (user, password) => bcrypt.compareSync(password,user.password)
 
+

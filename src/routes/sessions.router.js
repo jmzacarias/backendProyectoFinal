@@ -1,8 +1,6 @@
 import { Router } from "express";
 import __dirname from "../utils.js";
-import usersDAO from "../dao/mongooseManagers/models/usersSchema.js";
 import UserManager from "../dao/mongooseManagers/usersManager.js";
-import { isValidPassword } from "../utils.js";
 import passport from 'passport'
  
 const userManager = new UserManager()
@@ -37,14 +35,13 @@ router.post('/login', passport.authenticate('login', {failureRedirect: '/failLog
                 email: req.user.email,
                 age: req.user.age
             }
-            if(req.user.email === 'adminCoder@coder.com') {
-                req.session.user.role= 'admin'
+            if(req.user.email ==='adminCoder@coder.com') {
+                req.session.user.role = 'admin'
             } else {
-                req.session.user.role= 'user'
+                req.session.user.role = 'user'
             }
             resolve();
         });
-
         return res.redirect('/products')
     } catch (error) {
         res.status(400).send({status: 'error', error: error.message})

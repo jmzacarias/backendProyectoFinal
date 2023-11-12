@@ -6,6 +6,7 @@ import { createHash } from '../utils.js'
 import { isValidPassword } from '../utils.js'
 
 
+
 const localStrategy = local.Strategy
 
 const initializePassport = ()=> {
@@ -43,6 +44,16 @@ const initializePassport = ()=> {
         usernameField: 'email',
     }, async(username, password, done) => {
         try {
+            console.log({username:username})
+            // if(username===`adminCoder@coder.com` && password ===  `adminCod3r123`) {
+            //     const user = { username , 
+            //         first_name : 'Coder',
+            //         last_name: 'Coder',
+            //         email: 'adminCoder@coder.com',
+            //         age: 99
+            //     }
+            //     return done(null, user)
+            // }
             const user = await usersDAO.findOne({ email:username })
             if(!user){ 
                 return done( null, false )
