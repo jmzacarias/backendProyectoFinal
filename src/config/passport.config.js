@@ -40,31 +40,37 @@ const initializePassport = ()=> {
         done(null,user)
     })
 
-    passport.use('login', new localStrategy({
-        usernameField: 'email',
-    }, async(username, password, done) => {
-        try {
-            console.log({username:username})
-            // if(username===`adminCoder@coder.com` && password ===  `adminCod3r123`) {
-            //     const user = { username , 
-            //         first_name : 'Coder',
-            //         last_name: 'Coder',
-            //         email: 'adminCoder@coder.com',
-            //         age: 99
-            //     }
-            //     return done(null, user)
-            // }
-            const user = await usersDAO.findOne({ email:username })
-            if(!user){ 
-                return done( null, false )
-             }
-            if(!isValidPassword(user, password)) return done(null, false)
-            return done(null,user)
-        } catch (error) {
-            console.log({error: error.message})
-            done(null, profile)
-        }
-    }))
+    passport.use("login", new localStrategy({ 
+            usernameField: "email",
+          },
+          async (username, password, done) => {
+            try {
+              const admin = await usersDAO.findOne({
+                email: "adminCoder@coder.com",
+              });
+              if (!admin) {
+                const admin = {
+                  first_name: "Coder",
+                  last_name: "House",
+                  email: "adminCoder@coder.com",
+                  password: createHash("adminCod3r123"),
+                };
+                await usersDAO.create(admin);
+              }
+              const user = await usersDAO.findOne({ email: username });
+              if (!user) {
+                return done(null, false, {
+                  message: "Nombre de usuario no registrado",
+                });
+              }
+              if (!isValidPassword(user, password)) { return done(null, false, { message: "Contraseña Incorrecta",});}
+              return done(null, user);
+            } catch (err) {
+              return done(err);
+            }
+          }
+        )
+      );
 
     passport.use('github', new gitHubStrategy({
         clientID: 'Iv1.d7200fc20f84473d',

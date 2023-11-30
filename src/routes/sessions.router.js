@@ -49,6 +49,8 @@ router.post('/login', passport.authenticate('login', {failureRedirect: '/failLog
  
 })
 
+
+
 router.get('/failLogin', (req,res) => res.send({error:' Login Failed'}))
 
 router.get('/github', passport.authenticate('github', { scope: ['user:email']}), (req, res)=>{
