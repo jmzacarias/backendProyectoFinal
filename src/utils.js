@@ -24,3 +24,30 @@ export const createHash = password => bcrypt.hashSync(password , bcrypt.genSaltS
 export const isValidPassword = (user, password) => bcrypt.compareSync(password,user.password)
 
 
+export const handlePolicies = policies => (req, res, next) => {
+    const user = req.user || null
+     if (!policies.includes(user.role.toUpperCase())) {
+        return res.status(403).render('errors/base', { error: 'Necesita autorización'})
+      }
+      return next()
+}
+
+export const isAdmin = async(req, res, next) => {
+    console.log({reqBodyIsAdmin: req.body})
+    const isValidCredentials = (req.body.email === 'adminCoder@coder.com' && req.body.password === 'adminCod3r123');
+    console.log({isvalidcredentials:isValidCredentials})
+    if (isValidCredentials) {
+        await new Promise((resolve, reject) => {
+            req.session.user = {
+                first_name: 'CoderHouse',
+                last_name: 'Admin',
+                email: 'adminCoder@coder.com',
+                role: 'admin'
+            }
+            resolve();
+        });
+        return res.status(200).redirect('/products')
+    } else {
+      next();
+    }
+  };

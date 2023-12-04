@@ -3,7 +3,7 @@ import local from 'passport-local'
 import gitHubStrategy from 'passport-github2'
 import usersDAO from '../dao/mongooseManagers/models/usersSchema.js'
 import { createHash } from '../utils.js'
-import { isValidPassword } from '../utils.js'
+import { isValidPassword , isAdmin } from '../utils.js'
 
 
 
@@ -45,18 +45,6 @@ const initializePassport = ()=> {
           },
           async (username, password, done) => {
             try {
-              const admin = await usersDAO.findOne({
-                email: "adminCoder@coder.com",
-              });
-              if (!admin) {
-                const admin = {
-                  first_name: "Coder",
-                  last_name: "House",
-                  email: "adminCoder@coder.com",
-                  password: createHash("adminCod3r123"),
-                };
-                await usersDAO.create(admin);
-              }
               const user = await usersDAO.findOne({ email: username });
               if (!user) {
                 return done(null, false, {
@@ -80,7 +68,6 @@ const initializePassport = ()=> {
         console.log({ profile:profile })
         try {
             const user = await usersDAO.findOne({ email: profile._json.login })
-            console.log({user66passportConfig:user})
             if(user) return done(null, user)
             const newUser = {
                 first_name: profile._json.login,
